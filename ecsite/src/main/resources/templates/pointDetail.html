@@ -1,0 +1,298 @@
+<!--  Author:sugou -->
+<!--  Date:2022/05/01 -->
+<!--  Copyright Notice:IT Engineer Center Co.,Ltd. -->
+<!--  Description:ポイント詳細画面です。 -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>ポイント詳細画面</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="/css/pointDetail.css" th:href="@{/css/pointDetail.css}" rel="stylesheet" />
+<link href="/css/top.css" th:href="@{/css/top.css}" rel="stylesheet" />
+<script th:src="@{/js/top.js}" type="text/javascript"></script>
+</head>
+
+<body class="body_image">
+
+	<div th:include="~{block/top::headertop}"></div>
+	
+	<form action="#" th:action="@{/pointDetail/search}" th:object="${pointDetailForm}" method="post">
+
+		<div align="center">
+			<table>
+				<tr class="tr_valign">
+					<td>
+						<div class="frame_outside">
+							<table class="table_width">
+								<tr>
+									<td>
+										<!-- メルマガ登録 -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/mailmaga_btn01.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  ネットショッピング -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu01.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  オークション -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu02.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  本やCDのお買い物 -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu03.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  宿泊予約・切符購入 -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu04.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  アンケート -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu05.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  歩いて -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu06.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  音楽を聴いて -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu08.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  映画やドラマを見て -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu09.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  無料登録 -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu10.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<!--  食料品のお買い物 -->
+										<a th:href="@{/html/unmounting.html}">
+											<img th:src="@{/image/sideButton/point_mu11.gif}" class="img_border" />
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+					<td>
+						<div class="frame_outside">
+							<table>
+								<tr>
+									<td colspan="2">
+										<table class="get_point_table">
+											<tr>
+												<td><font class="get_point_size">現在の所持ポイント</font></td>
+											</tr>
+										</table>
+										<table class="point_state_table" border="0">
+											<tr>
+												<td class="td_center">前月ポイント残高</td>
+												<td class="td_center">今月の獲得ポイント</td>
+												<td class="td_center">今月の消費ポイント</td>
+												<td class="td_center">今月のポイント残高</td>
+												<td class="td_center">今月の交換回数</td>
+											</tr>
+											<tr>
+												<td class="td_right">
+													<label th:text="${#numbers.formatInteger(pointDetailForm.prevBalancePoint, 3, 'COMMA')}"/>
+													<label>&nbsp;ポイント</label>
+												</td>
+												<td class="td_right">
+													<label th:text="${#numbers.formatInteger(pointDetailForm.acquisitionPoint, 3, 'COMMA')}"/>
+													<label>&nbsp;ポイント</label>
+												</td>
+												<td class="td_right">
+													<label th:text="${#numbers.formatInteger(pointDetailForm.expenditurePoint, 3, 'COMMA')}"/>
+													<label>&nbsp;ポイント</label>
+												</td>
+												<td class="td_right">
+													<label th:text="${#numbers.formatInteger(pointDetailForm.balancePoint, 3, 'COMMA')}"/>
+													<label>&nbsp;ポイント</label>
+												</td>
+												<td class="td_right">
+													<label th:text="${#numbers.formatInteger(pointDetailForm.exchangeCount, 3, 'COMMA')}"/>
+													<label>&nbsp;回</label>
+												</td>																																																
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr class="tr_top">
+									<td class="item_list_td">
+										<table>
+											<tr th:each="recommendationInfo : ${pointDetailForm.recommendationList}">
+												<td>
+													<div class="frame">
+														あと&nbsp;
+														<font class="font_red">
+															<label th:text="${#numbers.formatInteger(recommendationInfo.remainderPoint, 3, 'COMMA')}"/>
+														</font>
+														<label>&nbsp;ポイント</label>
+														<table width="300px">
+															<tr>
+																<td align="left">
+																	<div class="farame_image">
+																		<a href="/pointDetail/viewGoodsDetail" th:href="@{/pointDetail/viewGoodsDetail(goodsId=${recommendationInfo.goodsId})}">
+																			<img th:src="@{/image/item/{imagePath}(imagePath=${recommendationInfo.imagePath})}" class="item_img" />
+																		</a>
+																	</div>
+																</td>
+																<td>
+																	<img th:src="@{image/icon/ico_point.gif}" class="point_img" />
+																	<label th:text="${#numbers.formatInteger(recommendationInfo.goodsPoint, 3, 'COMMA')}"/>
+																	<label>&nbsp;ポイント</label>
+																	<br /><br />
+																	<img th:src="@{/image/icon/ico_osusume.gif}" class="osusume_img" />
+																	<br />
+																	<a href="/pointDetail/viewGoodsDetail" th:href="@{/pointDetail/viewGoodsDetail(goodsId=${recommendationInfo.goodsId})}">
+																		<font size="2" th:text="${recommendationInfo.goodsName}"/>
+																	</a>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										<table>
+											<tr>
+												<td>
+													<div class="frame_search" align="left">
+														<img th:src="@{/image/backGround/search_point.png}"/>
+														<table align="center" class="inner_table">
+															<tr>
+																<td>
+																	<select id="searchPoint" name="searchPoint" class="box_length">
+																		<option th:value="all">すべてのポイント</option>
+																		<option th:each="pointCategory : ${pointDetailForm.pointCategoryList}" th:value="${pointCategory.pointCategoryCode}" th:inline="text">[[${pointCategory.pointAmount}]]</option>
+																	</select>
+																</td>
+																<td><input type="submit" name="searchPointButton" value="検索" /></td>
+															</tr>
+															<tr>
+																<td align="right">
+																	<img th:src="@{/image/icon/ico_arrow.gif}"/>
+																</td>
+																<td align="left">
+																	<font size="2pt">
+																		<a href="/pointDetail/search" th:href="@{/pointDetail/search(searchType=point, searchCondition=all)}">全アイテム一覧</a>
+																	</font>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="frame_search" align="left">
+														<img th:src="@{/image/backGround/search_item_no.png}"/>
+														<table align="center" class="inner_table">
+															<tr>
+																<td>
+																	<input id="searchId" name="searchId" class="box_length" maxlength="8" />
+																</td>
+																<td><input type="submit" name="searchIdButton" value="検索" /></td>
+															</tr>
+															<tr>
+																<td align="right">
+																	<img th:src="@{/image/icon/ico_arrow.gif}"/>
+																</td>
+																<td align="left">
+																	<font size="2pt">
+																		<a href="/pointDetail/search" th:href="@{/pointDetail/search(searchType=id, searchCondition=all)}">全アイテム一覧</a>
+																	</font>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="frame_search_long" align="left">
+														<img th:src="@{/image/backGround/search_genre.png}"/>
+														<table align="left" class="inner_table">
+															<tr th:each="genreInfo : ${pointDetailForm.genreList}">
+																<td class="td_left">
+																	<img th:src="@{/image/icon/ico_arrow.gif}"/>
+																	<font size="2pt">
+																		<a href="/pointDetail/search" th:href="@{/pointDetail/search(searchType=genre, searchCondition=${genreInfo.genreCode})}">
+																			<label th:text="${genreInfo.genreName}"/>
+																		</a>
+																	</font>
+																</td>
+															</tr>
+															<tr>
+																<td align="right">
+																	<img th:src="@{/image/icon/ico_arrow.gif}"/>
+																</td>
+																<td align="left">
+																	<font size="2pt">
+																		<a href="/pointDetail/search" th:href="@{/pointDetail/search(searchType=genre, searchCondition=all)}">全アイテム一覧</a>
+																	</font>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	</form>
+
+</body>
+</html>

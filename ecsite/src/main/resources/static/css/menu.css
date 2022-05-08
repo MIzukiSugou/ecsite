@@ -1,0 +1,17 @@
+.body_image {
+  background-image : url("../image/backGround/bd_bg02.gif");
+}
+
+.dummy_table {
+  background-image : url("../image/backGround/info_bg01.gif");
+  width : 954px;
+  height : 450px;
+}
+
+.img_border {
+  border : none;
+}
+
+.td_center {
+  text-align : center;
+}

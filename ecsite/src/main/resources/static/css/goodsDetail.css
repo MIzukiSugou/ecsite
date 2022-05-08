@@ -1,0 +1,23 @@
+.point_and_item_name {
+  background-image : url("../image/backGround/h3.gif");
+  background-position : 0% 70%;
+  background-repeat : repeat-x;
+}
+
+.frame {
+  position : relative;
+  vertical-align : bottom;
+  width : 586px;
+  height : 113px;
+  background : url("../image/backGround/h4.png");
+  padding : 2px;
+}
+
+.text_box {
+  text-align : right;
+  width : 50px;
+}
+
+.frame_outside {
+  background : #FFFFFF;
+}

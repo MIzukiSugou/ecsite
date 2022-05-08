@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ecsite.domain.mapper.LoginMapper">
+
+    <!-- ユーザ情報取得結果マッピング定義 -->
+    <resultMap id="selectUserResultMap" type="com.example.ecsite.domain.model.UserInfo">
+        <result property="familyNm" column="FAMILY_NM" />
+        <result property="firstNm" column="FIRST_NM" />
+    </resultMap>
+
+    <!-- ログインID/パスワード存在チェックSQL -->
+    <select id="checkLogin" parameterType="map" resultType="BigDecimal">
+        SELECT
+            COUNT(1) RECORD_COUNT
+        FROM
+            USER_MASTER UMT
+           ,PASSWORD_MANAGEMENT PMT
+        WHERE
+            UMT.USER_ID           = #{userId}
+        AND UMT.ACCOUNT_LOCK_FLAG = '0'
+        AND UMT.DELETE_FLAG       = '0'
+        AND UMT.USER_ID           = PMT.USER_ID
+        AND PMT.PASSWORD          = #{password}
+        AND PMT.DELETE_FLAG       = '0'
+        AND PMT.CHANGE_COUNT      =
+          (
+            SELECT
+                MAX(CHANGE_COUNT)
+            FROM
+                PASSWORD_MANAGEMENT
+            WHERE
+                USER_ID     = #{userId}
+            AND DELETE_FLAG = '0'
+          )
+    </select>
+
+    <!-- ユーザ情報取得SQL -->
+    <select id="selectUser" parameterType="map" resultMap="selectUserResultMap">
+        SELECT
+            UMT.FAMILY_NM
+           ,UMT.FIRST_NM
+        FROM
+            USER_MASTER UMT
+        WHERE
+            UMT.USER_ID     = #{userId}
+        AND UMT.DELETE_FLAG = '0'
+    </select>
+
+    <!-- ログイン失敗更新SQL -->
+    <update id="updateLoginFailure">
+        UPDATE
+            USER_MASTER
+        SET
+            LOGIN_FAILURE_COUNT = CASE WHEN LOGIN_FAILURE_COUNT IS NULL THEN 1 ELSE (LOGIN_FAILURE_COUNT + 1) END
+           ,ACCOUNT_LOCK_FLAG   = CASE WHEN (LOGIN_FAILURE_COUNT IS NOT NULL AND (LOGIN_FAILURE_COUNT + 1) >= 10) THEN '1' ELSE '0' END
+           ,UPDATE_DATE         = NOW()
+           ,UPDATE_USER         = #{userId}
+        WHERE
+            USER_ID     = #{userId}
+        AND DELETE_FLAG = '0'
+    </update>
+
+    <!-- ログイン成功更新SQL -->
+    <update id="updateLoginSuccess">
+        UPDATE
+            USER_MASTER
+        SET
+            LAST_LOGIN_DATE     = NOW()
+           ,LOGIN_COUNT         = (CASE WHEN LOGIN_COUNT IS NULL THEN 1 ELSE LOGIN_COUNT + 1 END)
+           ,LOGIN_FAILURE_COUNT = 0
+           ,UPDATE_DATE         = NOW()
+           ,UPDATE_USER         = #{userId}
+        WHERE
+            USER_ID     = #{userId}
+        AND DELETE_FLAG = '0'
+    </update>
+</mapper>

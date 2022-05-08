@@ -1,0 +1,389 @@
+<!--  Author:Itec -->
+<!--  Date:2022/05/03 -->
+<!--  Copyright Notice:IT Engineer Center Co.,Ltd. -->
+<!--  Description:商品一覧画面です。 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>商品一覧画面</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="/css/goodsInquiry.css" th:href="@{/css/goodsInquiry.css}" rel="stylesheet" />
+<link href="/css/top.css" th:href="@{/css/top.css}" rel="stylesheet" />
+<script th:src="@{/js/top.js}" type="text/javascript"></script>
+</head>
+
+<body class="body_image">
+
+	<div th:include="~{block/top::headertop}"></div>
+
+	<div align="center">
+		<table>
+			<tr class="tr_valign">
+				<td>
+					<div class="frame_outside">
+						<table class="table_width">
+							<tr>
+								<td>
+									<!-- メルマガ登録 -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/mailmaga_btn01.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  ネットショッピング -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu01.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  オークション -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu02.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  本やCDのお買い物 -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu03.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  宿泊予約・切符購入 -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu04.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  アンケート -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu05.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  歩いて -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu06.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  音楽を聴いて -->										
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu08.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  映画やドラマを見て -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu09.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  無料登録 -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu10.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--  食料品のお買い物 -->
+									<a th:href="@{/html/unmounting.html}">
+										<img th:src="@{/image/sideButton/point_mu11.gif}" class="img_border" />
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+				<td>
+					<div class="frame_outside">
+						<form action="#" th:action="@{/goodsInquiry/search}" th:object="${goodsInquiryForm}" method="post">
+							<table>
+								<tr>
+									<td>
+										<table class="get_point_table">
+											<tr>
+												<td><font class="get_point_size">アイテム検索結果</font></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<table>
+											<tr>
+												<td width="150px"><font size="2pt"> 現在の所持ポイント </font></td>
+												<td>
+													<font color="red" size="2pt">
+														<label th:text="${#numbers.formatInteger(goodsInquiryForm.myPoint, 3, 'COMMA')}"/>
+														<label>&nbsp;ポイント</label>
+													</font>
+												</td>
+											</tr>
+										</table>
+										<hr />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<table width="720px" height="72px" th:background="@{/image/backGround/table_bg.png}">
+											<tr>
+												<td>
+													<table>
+														<tr>
+															<td width="120px" height="30px">
+																<font size="2pt">ポイント数で探す </font>
+															</td>
+															<td>
+																<select id="searchPointAmount" name="searchPointAmount" class="box_length">
+																	<option th:value="all">すべてのポイント</option>
+																	<option th:each="pointCategory : ${goodsInquiryForm.pointCategoryList}" th:value="${pointCategory.pointCategoryCode}" th:inline="text">[[${pointCategory.pointAmount}]]</option>
+																</select>															
+															</td>
+															<td rowspan="2" width="70px" align="center">
+																<input type="submit" name="searchPointAndGenreButton" value="検索" />
+															</td>
+														</tr>
+														<tr>
+															<td><font size="2pt"> ジャンルから探す </font></td>
+															<td>
+																<select id="searchGenre" name="searchGenre" class="box_length">
+																	<option th:value="all">すべてのジャンル</option>
+																	<option th:each="genre : ${goodsInquiryForm.genreList}" th:value="${genre.genreCode}" th:inline="text">[[${genre.genreName}]]</option>
+																</select>	
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td>
+													<table width="300px">
+														<tr>
+															<td><font size="2pt"> アイテム番号から探す </font></td>
+														</tr>
+														<tr>
+															<td>
+																<input id="searchGoodsId" name="searchGoodsId" size="20px" maxlength="8" />
+																<input type="submit" name="searchGoodsIdButton" value="検索" />
+															</td>
+														</tr>
+														<tr>
+															<td><font size="1pt"> ※半角数字8桁で入力してください </font></td>
+															
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<br />
+							<table width="720px">
+								<tr>
+									<td width="33%">
+										<font size="2pt">
+											<label>&nbsp;&nbsp;</label>
+											<label th:text="${#numbers.formatInteger(goodsInquiryForm.totalGoodsCount, 3, 'COMMA')}"/>
+											<label>&nbsp;件の該当データがあります。</label>
+										</font>
+									</td>
+									<td width="33%" align="center">
+										<font size="2pt">
+											<label th:text="${#numbers.formatInteger(goodsInquiryForm.pageCount, 3, 'COMMA')}"/>										
+											<label>/</label>
+											<label th:text="${#numbers.formatInteger(goodsInquiryForm.totalPageCount, 3, 'COMMA')}"/>
+											<label>ページ</label>
+										</font>
+									</td>
+									<td width="33%" align="right">
+										<font size="2pt">
+											<label>&nbsp;&nbsp;</label>
+											<label th:text="${#numbers.formatInteger(goodsInquiryForm.firstGoodsCount, 3, 'COMMA')}"/>
+											<label>-</label>
+											<label th:text="${#numbers.formatInteger(goodsInquiryForm.lastGoodsCount, 3, 'COMMA')}"/>
+											<label>件を表示</label>
+										</font>
+									</td>
+								</tr>
+								<tr>
+									<td><br /></td>
+								</tr>
+								<tr>
+									<td align="center" colspan="3">
+										<font size="2pt">
+											<th:block th:if="${goodsInquiryForm.showForwardLink == true}" >
+												<a href="/goodsInquiry/pageMove" th:href="@{/goodsInquiry/pageMove(page_control=forward)}">前のページ</a>
+											</th:block>
+											<th:block th:if="${goodsInquiryForm.showForwardLink == false}" >
+												<label>&lt;&lt;前のページ</label>
+											</th:block>											
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<th:block th:if="${goodsInquiryForm.showNextLink == true}" >
+												<a href="/goodsInquiry/pageMove" th:href="@{/goodsInquiry/pageMove(page_control=next)}">次のページ</a>
+											</th:block>
+											<th:block th:if="${goodsInquiryForm.showNextLink == false}" >
+												<label>次のページ&gt;&gt;</label>
+											</th:block>													
+										</font>
+									</td>
+								</tr>
+							</table>
+							
+							<br />
+							
+							<th:block th:if="${not #lists.isEmpty(goodsInquiryForm.goodsList)}">
+								<table align="center">
+								
+									<!-- 1段目 -->
+									<tr>
+										<th:block th:each="goodsInfo, status : ${goodsInquiryForm.goodsList}">
+											<th:block th:if="${not #strings.isEmpty(goodsInfo.goodsId) && (status.index >= 0 && status.index < 3)}" >
+												<td>
+													<div class="item_frame_image" align="center">
+														<table width="150px" height="200px">
+															<tr>
+																<td height="20px" valign="middle">
+																	<img th:src="@{/image/icon/ico_point.gif}" class="point_img" />
+																	<font size="2">
+																		<label th:text="${#numbers.formatInteger(goodsInfo.goodsPoint, 3, 'COMMA')}"/>
+																		<label>&nbsp;ポイント</label>
+																	</font>
+																</td>
+															</tr>
+															<tr>
+																<td align="center" height="91px">
+																	<div>
+																		<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																			<img th:src="@{/image/item/{imagePath}(imagePath=${goodsInfo.imagePath})}" class="item_img" />
+																		</a>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																		<font size="2" style="line-height: 18px;">
+																			<label th:text="${goodsInfo.goodsName}"/>
+																		</font>
+																	</a>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</th:block>
+										</th:block>
+									</tr>
+
+									<!-- 2段目 -->									
+									<tr>
+										<th:block th:each="goodsInfo, status : ${goodsInquiryForm.goodsList}">
+											<th:block th:if="${not #strings.isEmpty(goodsInfo.goodsId) && (status.index >= 3 && status.index < 6)}" >
+												<td>
+													<div class="item_frame_image" align="center">
+														<table width="150px" height="200px">
+															<tr>
+																<td height="20px" valign="middle">
+																	<img th:src="@{/image/icon/ico_point.gif}" class="point_img" />
+																	<font size="2">
+																		<label th:text="${#numbers.formatInteger(goodsInfo.goodsPoint, 3, 'COMMA')}"/>
+																		<label>&nbsp;ポイント</label>
+																	</font>
+																</td>
+															</tr>
+															<tr>
+																<td align="center" height="91px">
+																	<div>
+																		<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																			<img th:src="@{/image/item/{imagePath}(imagePath=${goodsInfo.imagePath})}" class="item_img" />
+																		</a>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																		<font size="2" style="line-height: 18px;">
+																			<label th:text="${goodsInfo.goodsName}"/>
+																		</font>
+																	</a>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</th:block>
+										</th:block>
+									</tr>
+
+									<!-- 3段目 -->									
+									<tr>
+										<th:block th:each="goodsInfo, status : ${goodsInquiryForm.goodsList}">
+											<th:block th:if="${not #strings.isEmpty(goodsInfo.goodsId) && (status.index >= 6 && status.index < 9)}" >
+												<td>
+													<div class="item_frame_image" align="center">
+														<table width="150px" height="200px">
+															<tr>
+																<td height="20px" valign="middle">
+																	<img th:src="@{/image/icon/ico_point.gif}" class="point_img" />
+																	<font size="2">
+																		<label th:text="${#numbers.formatInteger(goodsInfo.goodsPoint, 3, 'COMMA')}"/>
+																		<label>&nbsp;ポイント</label>
+																	</font>
+																</td>
+															</tr>
+															<tr>
+																<td align="center" height="91px">
+																	<div>
+																		<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																			<img th:src="@{/image/item/{imagePath}(imagePath=${goodsInfo.imagePath})}" class="item_img" />
+																		</a>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	<a href="/goodsInquiry/viewGoodsDetail" th:href="@{/goodsInquiry/viewGoodsDetail(goodsId=${goodsInfo.goodsId})}">
+																		<font size="2" style="line-height: 18px;">
+																			<label th:text="${goodsInfo.goodsName}"/>
+																		</font>
+																	</a>
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</th:block>
+										</th:block>
+									</tr>
+
+								</table>
+							</th:block>
+						</form>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

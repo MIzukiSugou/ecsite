@@ -1,0 +1,26 @@
+.button_table {
+  border-spacing : 20px;
+  width : 952px;
+}
+
+.img_border {
+  border : none;
+}
+
+.user_table {
+  background-image : url("../image/backGround/logincard_bg02.gif");
+  width : 952px;
+  height : 35px;
+}
+
+.td_left {
+  text-align : left;
+}
+
+.font_mono {
+  color : #5F5F5F;
+}
+
+.font_black {
+  color : #000066;
+}

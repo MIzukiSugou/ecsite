@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+  "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ecsite.domain.mapper.GoodsDetailMapper">
+
+    <!-- 商品情報検索結果マッピング定義 -->
+    <resultMap id="selectGoodsInfoResultMap" type="com.example.ecsite.domain.model.GoodsDetailInfo">
+        <result property="goodsName" column="GOODS_NAME" />
+        <result property="goodsPoint" column="GOODS_POINT" />
+        <result property="goodsInfo1" column="GOODS_INFO_1" />
+        <result property="goodsInfo2" column="GOODS_INFO_2" />
+        <result property="imagePath" column="IMAGE_PATH" />
+        <result property="maxExchangeCount" column="MAX_EXCHANGE_COUNT" />
+        <result property="categoryName" column="CATEGORY_NAME" />
+    </resultMap>
+
+    <!-- 交換予定登録SQL -->
+    <insert id="insertExchangePlan">
+        INSERT INTO EXCHANGE_PLAN
+        (
+            RESERVE_NO
+           ,USER_ID
+           ,GOODS_ID
+           ,RESERVE_DATE
+           ,EXCHANGE_AMOUNT
+           ,INSERT_DATE
+           ,INSERT_USER
+           ,UPDATE_DATE
+           ,UPDATE_USER
+           ,DELETE_FLAG
+        ) VALUES (
+            CASE WHEN (SELECT MAX(RESERVE_NO) + 1 FROM EXCHANGE_PLAN) IS NULL
+              THEN '00000001'
+              ELSE LPAD((SELECT MAX(RESERVE_NO) + 1 FROM EXCHANGE_PLAN), 8, '0')
+            END
+           ,#{userId}
+           ,#{goodsId}
+           ,NOW()
+           ,#{exchangeAmount}
+           ,NOW()
+           ,#{userId}
+           ,NOW()
+           ,#{userId}
+           ,'0'
+        )
+    </insert>
+
+    <!-- ポイントマスタ更新SQL -->
+<!--     mysql -->
+<!--     <update id="updatePointMaster"> -->
+<!--         UPDATE -->
+<!--             POINT_MASTER -->
+<!--         SET -->
+<!--             BALANCE_POINT     = #{balancePoint} -->
+<!--            ,EXPENDITURE_POINT = EXPENDITURE_POINT + #{expenditurePoint} -->
+<!--            ,EXCHANGE_COUNT    = EXCHANGE_COUNT + 1 -->
+<!--            ,UPDATE_DATE       = NOW() -->
+<!--            ,UPDATE_USER       = #{userId} -->
+<!--         WHERE -->
+<!--             USER_ID     = #{userId} -->
+<!--         AND POINT_YM    = DATE_FORMAT(NOW(), '%Y%m') -->
+<!--         AND DELETE_FLAG = '0' -->
+<!--     </update> -->
+    <update id="updatePointMaster">
+        UPDATE
+            POINT_MASTER
+        SET
+            BALANCE_POINT     = #{balancePoint}
+           ,EXPENDITURE_POINT = EXPENDITURE_POINT + #{expenditurePoint}
+           ,EXCHANGE_COUNT    = EXCHANGE_COUNT + 1
+           ,UPDATE_DATE       = NOW()
+           ,UPDATE_USER       = #{userId}
+        WHERE
+            USER_ID     = #{userId}
+        AND POINT_YM    >= FORMATDATETIME(NOW(), '%Y%m')
+        AND DELETE_FLAG = '0'
+    </update>
+    
+    <!-- 商品情報検索SQL -->
+    <select id="selectGoodsInfo" parameterType="map" resultMap="selectGoodsInfoResultMap">
+        SELECT
+            GMT.GOODS_NAME
+           ,GMT.GOODS_POINT
+           ,GMT.GOODS_INFO_1
+           ,GMT.GOODS_INFO_2
+           ,GMT.IMAGE_PATH
+           ,GMT.MAX_EXCHANGE_COUNT
+           ,CMT.CATEGORY_NAME
+        FROM
+            GOODS_MASTER    GMT
+           ,CATEGORY_MASTER CMT
+        WHERE
+            GMT.GOODS_ID       = #{goodsId}
+        AND GMT.DELETE_FLAG    = '0'
+        AND GMT.GOODS_CATEGORY = CMT.GOODS_CATEGORY
+        AND CMT.DELETE_FLAG    = '0'
+    </select>
+</mapper>

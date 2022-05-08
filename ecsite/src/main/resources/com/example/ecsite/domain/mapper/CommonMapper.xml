@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+  "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ecsite.domain.mapper.CommonMapper">
+
+    <!-- キャンペーン商品判定結果マッピング定義 -->
+    <resultMap id="selectCampaignResultMap" type="com.example.ecsite.domain.model.CampaignInfo">
+        <result property="campaignStartDate" column="CAMPAIGN_START_DATE" />
+        <result property="campaignEndDate" column="CAMPAIGN_END_DATE" />
+        <result property="limitCount" column="LIMIT_COUNT" />
+    </resultMap>
+
+    <!-- ジャンル一覧取得結果マッピング定義 -->
+    <resultMap id="selectGenreResultMap" type="com.example.ecsite.domain.model.GenreInfo">
+        <result property="genreCode" column="GOODS_CATEGORY" />
+        <result property="genreName" column="CATEGORY_NAME" />
+    </resultMap>
+
+    <!-- 未公開商品判定結果マッピング定義 -->
+    <resultMap id="selectGoodsInfoResultMap" type="com.example.ecsite.domain.model.GoodsInfo">
+        <result property="goodsId" column="GOODS_ID" />
+        <result property="goodsName" column="GOODS_NAME" />
+        <result property="goodsPoint" column="GOODS_POINT" />
+        <result property="imagePath" column="IMAGE_PATH" />
+        <result property="maxExchangeCount" column="MAX_EXCHANGE_COUNT" />
+    </resultMap>
+
+    <!-- 所持ポイント取得結果マッピング定義 -->
+    <resultMap id="selectMyPointResultMap" type="com.example.ecsite.domain.model.MyPointInfo">
+        <result property="balancePoint" column="BALANCE_POINT" />
+        <result property="prevBalancePoint" column="PREV_BALANCE_POINT" />
+        <result property="acquisitionPoint" column="ACQUISITION_POINT" />
+        <result property="expenditurePoint" column="EXPENDITURE_POINT" />
+        <result property="exchangeCount" column="EXCHANGE_COUNT" />
+    </resultMap>
+
+    <!-- ポイント分類一覧取得結果マッピング定義 -->
+    <resultMap id="selectPointCategoryResultMap" type="com.example.ecsite.domain.model.PointCategoryInfo">
+        <result property="pointCategoryCode" column="POINT_CATEGORY_CODE" />
+        <result property="pointAmount" column="POINT_AMOUNT" />
+    </resultMap>
+
+    <!-- キャンペーン商品判定SQL -->
+    <select id="selectCampaign" parameterType="map" resultMap="selectCampaignResultMap">
+        SELECT
+            CAMPAIGN_START_DATE
+           ,CAMPAIGN_END_DATE
+           ,LIMIT_COUNT
+        FROM
+            CAMPAIGN
+        WHERE
+            GOODS_ID    = #{goodsId}
+        AND DELETE_FLAG = '0'
+    </select>
+
+    <!-- 交換数取得SQL -->
+    <select id="selectExchangeTotalUser" parameterType="map" resultType="BigDecimal">
+        SELECT
+            (CASE WHEN ECP.EXCHANGE_AMOUNT IS NULL THEN 0 ELSE ECP.EXCHANGE_AMOUNT END) +
+            (CASE WHEN ECD.EXCHANGE_AMOUNT IS NULL THEN 0 ELSE ECD.EXCHANGE_AMOUNT END) EXCHANGE_TOTAL
+        FROM
+          (
+            SELECT
+                SUM(CASE WHEN EXCHANGE_AMOUNT IS NULL THEN 0 ELSE EXCHANGE_AMOUNT END) EXCHANGE_AMOUNT
+            FROM
+                EXCHANGE_PLAN
+            WHERE
+                GOODS_ID    = #{goodsId}
+            AND USER_ID     = #{userId}
+            AND DELETE_FLAG = '0'
+          ) ECP
+          ,(
+            SELECT
+                SUM(CASE WHEN EXCHANGE_AMOUNT IS NULL THEN 0 ELSE EXCHANGE_AMOUNT END) EXCHANGE_AMOUNT
+            FROM
+                EXCHANGE_DECIDE
+            WHERE
+                GOODS_ID    = #{goodsId}
+            AND USER_ID     = #{userId}
+            AND DELETE_FLAG = '0'
+          ) ECD
+    </select>
+
+    <!-- ジャンル一覧取得SQL -->
+    <select id="selectGenre" resultMap="selectGenreResultMap">
+        SELECT
+            GOODS_CATEGORY
+           ,CATEGORY_NAME
+        FROM
+            CATEGORY_MASTER
+        WHERE
+            DELETE_FLAG = '0'
+        ORDER BY
+            CATEGORY_SORT_NO ASC
+    </select>
+
+    <!-- 商品情報取得SQL -->
+    <select id="selectGoodsInfo" parameterType="map" resultMap="selectGoodsInfoResultMap">
+        SELECT
+            GMT.GOODS_ID
+           ,GMT.GOODS_NAME
+           ,GMT.GOODS_POINT
+           ,GMT.IMAGE_PATH
+           ,GMT.MAX_EXCHANGE_COUNT
+        FROM
+            GOODS_MASTER          GMT
+           ,USER_MASTER           UMT
+           ,CATEGORY_MASTER       CMT
+        WHERE
+            UMT.USER_ID        = #{userId}
+        AND UMT.DELETE_FLAG    = '0'
+        AND GMT.DELETE_FLAG    = '0'
+        AND GMT.GOODS_CATEGORY = CMT.GOODS_CATEGORY
+        AND CMT.DELETE_FLAG    = '0'
+        <if test='goodsId != null and goodsId != "all"'>
+        AND GMT.GOODS_ID       LIKE #{goodsId} 
+        </if>
+        <if test='goodsPoint != null and goodsPoint != "all"'>
+        AND GMT.GOODS_POINT    = #{goodsPoint} 
+        </if>
+        <if test='goodsCategory != null and goodsCategory != "all"'>
+        AND GMT.GOODS_CATEGORY LIKE #{goodsCategory} 
+        </if>        
+        
+<!--         AND -->
+<!--           ( -->
+<!--             (UMT.USER_RANK = '1' AND GMT.GOODS_RANK  = '7') OR -->
+<!--             (UMT.USER_RANK = '2' AND (GMT.GOODS_RANK = '7'  OR GMT.GOODS_RANK = '6')) OR -->
+<!--             (UMT.USER_RANK = '4') -->
+<!--           ) -->
+        ORDER BY
+            GMT.GOODS_POINT      ASC
+           ,CMT.CATEGORY_SORT_NO ASC
+           ,GMT.GOODS_NAME       ASC
+    </select>
+
+    <!-- 未公開商品判定SQL -->
+    <select id="selectGoodsPlan" parameterType="map" resultType="BigDecimal">
+        SELECT
+            COUNT(1) GOODS_PLAN_COUNT
+        FROM
+            GOODS_PLAN
+        WHERE
+            GOODS_ID     = #{goodsId}
+        AND SHOW_DATE    > NOW()
+        AND DELETE_FLAG  = '0'
+    </select>
+
+    <!-- 所持ポイント取得SQL -->
+<!--     mysql -->
+<!--     <select id="selectMyPoint" parameterType="map" resultMap="selectMyPointResultMap"> -->
+<!--         SELECT -->
+<!--             BALANCE_POINT -->
+<!--            ,PREV_BALANCE_POINT -->
+<!--            ,ACQUISITION_POINT -->
+<!--            ,EXPENDITURE_POINT -->
+<!--            ,EXCHANGE_COUNT -->
+<!--         FROM -->
+<!--             POINT_MASTER -->
+<!--         WHERE -->
+<!--             USER_ID     = #{userId} -->
+<!--         AND POINT_YM    = DATE_FORMAT(NOW(), '%Y%m') -->
+<!--         AND DELETE_FLAG = '0' -->
+<!--     </select> -->
+    <select id="selectMyPoint" parameterType="map" resultMap="selectMyPointResultMap">
+        SELECT
+            BALANCE_POINT
+           ,PREV_BALANCE_POINT
+           ,ACQUISITION_POINT
+           ,EXPENDITURE_POINT
+           ,EXCHANGE_COUNT
+        FROM
+            POINT_MASTER
+        WHERE
+            USER_ID     = #{userId}
+        AND POINT_YM    >= FORMATDATETIME(NOW(), '%Y%m')
+        AND DELETE_FLAG = '0'
+    </select>    
+
+    <!-- ポイント分類一覧取得SQL -->
+    <select id="selectPointCategory" parameterType="map" resultMap="selectPointCategoryResultMap">
+        SELECT
+            POINT_CATEGORY_CODE
+           ,POINT_AMOUNT
+        FROM
+            POINT_CATEGORY_MASTER
+        WHERE
+            DELETE_FLAG = '0'
+        ORDER BY
+            POINT_AMOUNT ASC
+    </select>
+
+    <!-- ポイント分類ポイント数取得SQL -->
+    <select id="selectPointCategoryPoint" parameterType="map" resultType="BigDecimal">
+        SELECT
+            POINT_AMOUNT
+        FROM
+            POINT_CATEGORY_MASTER
+        WHERE
+            POINT_CATEGORY_CODE = #{pointCategoryCode}
+        AND DELETE_FLAG         = '0'
+    </select>
+
+    <!-- 限定個数確認SQL -->
+    <select id="selectTotalAmountCampaign" parameterType="map" resultType="BigDecimal">
+        SELECT
+            (CASE WHEN ECP.EXCHANGE_AMOUNT IS NULL THEN 0 ELSE ECP.EXCHANGE_AMOUNT END) +
+            (CASE WHEN ECD.EXCHANGE_AMOUNT IS NULL THEN 0 ELSE ECD.EXCHANGE_AMOUNT END) EXCHANGE_TOTAL
+        FROM
+          (
+            SELECT
+                SUM(CASE WHEN EXCHANGE_AMOUNT IS NULL THEN 0 ELSE EXCHANGE_AMOUNT END) EXCHANGE_AMOUNT
+            FROM
+                EXCHANGE_PLAN
+            WHERE
+                GOODS_ID    = #{goodsId}
+            AND RESERVE_DATE BETWEEN TO_DATE(#{startDate}, 'YYYYMMDD') AND TO_DATE(#{endDate}, 'YYYYMMDD')
+            AND DELETE_FLAG = '0'
+          ) ECP
+          ,(
+            SELECT
+                SUM(CASE WHEN EXCHANGE_AMOUNT IS NULL THEN 0 ELSE EXCHANGE_AMOUNT END) EXCHANGE_AMOUNT
+            FROM
+                EXCHANGE_DECIDE
+            WHERE
+                GOODS_ID    = #{goodsId}
+            AND RESERVE_DATE BETWEEN TO_DATE(#{startDate}, 'YYYYMMDD') AND TO_DATE(#{endDate}, 'YYYYMMDD')
+            AND DELETE_FLAG = '0'
+          ) ECD
+    </select>
+</mapper>

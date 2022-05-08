@@ -1,0 +1,38 @@
+.body_color {
+  background-color : #E5F1FF;
+}
+
+.text_box {
+  width : 180px;
+  height : 20px;
+  font-size : 12pt;
+  background-color : #FFFFE5;
+  color : #7F7F7F;
+}
+
+.sub_message {
+  font-size : small;
+  color : #7F7F7F;
+}
+
+.main_table {
+  width : 500px;
+  height : 250px;
+  background-color : #FFFFFF;
+  padding : 10;
+  margin : auto;
+}
+
+.table_size {
+  width : 380px;
+  margin : auto;
+}
+
+.table_header {
+  width : 150px;
+}
+
+.error_msg {
+  color : red;
+  text-align :left;
+}

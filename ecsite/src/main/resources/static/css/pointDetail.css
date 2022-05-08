@@ -1,0 +1,117 @@
+.frame {
+  border : 1px solid #E2E2E2;
+  padding : 2px;
+  width : 300px;
+  height : 140px;
+  background : #FFFFFF;
+}
+
+.farame_image {
+  border : 1px solid #E2E2E2;
+  padding : 2px;
+  width : 110px;
+  background : #FFFFFF;
+}
+
+.frame_search {
+  border : 1px solid #E2E2E2;
+  padding : 2px;
+  width : 284px;
+  height : 100px;
+  background : #FFFFFF;
+}
+
+.box_length {
+  width : 150px;
+}
+
+.frame_search_long {
+  border : 1px solid #E2E2E2;
+  padding : 2px;
+  width : 284px;
+  height : 510px;
+  background : #FFFFFF;
+}
+
+.inner_table {
+  width : 284px;
+}
+
+.frame_outside {
+  background : #FFFFFF;
+}
+
+.body_image {
+  background-image : url("../image/backGround/bd_bg02.gif");
+}
+
+.tr_valign {
+  vertical-align : top;
+}
+
+.table_width {
+  width : 190px;
+}
+
+.img_border {
+  border : none;
+}
+
+.get_point_table {
+  background-image : url("../image/backGround/h1_lower.gif");
+  width : 720px;
+  height : 85px;
+}
+
+.point_state_table {
+  border-spacing : 1px;
+  width : 720px;
+  background-color : #C0C0C0;
+}
+
+.td_center {
+  text-align : center;
+  background-color : #FFFFFF;
+}
+
+.td_right {
+  text-align : right;
+  background-color : #FFFFFF;
+}
+
+.item_list_td {
+  width : 330px;
+}
+
+.tr_top {
+  vertical-align : top;
+}
+
+.get_point_size {
+  font-size : 3ex;
+  font-weight : bold;
+}
+
+.font_red {
+  color : red;
+}
+
+.item_img {
+  border : none;
+  width : 110px;
+  height : 91px;
+}
+
+.point_img {
+  width : 17px;
+  height : 17px;
+}
+
+.osusume_img {
+  width : 43px;
+  height : 20px;
+}
+
+.td_left {
+  text-align : left;
+}

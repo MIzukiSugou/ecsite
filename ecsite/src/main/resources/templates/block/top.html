@@ -1,0 +1,61 @@
+<!-- Author:sugou -->
+<!-- Date:2022/05/01 -->
+<!-- Copyright Notice:IT Engineer Center Co.,Ltd. -->
+<!-- Description:共通ヘッダ画面です。 -->
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="headertop">
+<form action="#" th:action="@{/logout}" method="post">
+
+	<div align="center">
+
+		<table class="button_table">
+			<tr>
+				<td width="60%"></td>
+				<td><img th:src="@{/image/backGround/hb_nav_line.gif}" /></td>
+				<td>
+ 					<!-- サイトマップ -->
+ 	 				<a th:href="@{/html/unmounting.html}">
+						<img th:src="@{/image/button/hb_nav01.gif}" class="img_border" />
+					</a>
+				</td>
+				<td><img th:src="@{/image/backGround/hb_nav_line.gif}" /></td>
+				<td>
+ 					<!-- Q&A -->
+ 	 				<a th:href="@{/html/unmounting.html}">
+ 	 					<img th:src="@{/image/button/hb_nav02.gif}" class="img_border" />
+					</a>
+				</td>
+				<td><img th:src="@{/image/backGround/hb_nav_line.gif}" /></td>
+				<td>
+					<!-- お問い合わせ -->
+ 	 				<a th:href="@{/html/unmounting.html}">
+ 	 					<img th:src="@{/image/button/hb_nav03.gif}" class="img_border" />
+					</a>
+				</td>
+				<td><img th:src="@{/image/backGround/hb_nav_line.gif}" /></td>
+				<td>
+					<!-- ログアウト -->
+					<a href="javascript:void(0)" onclick="logout();return false;">
+						<img th:src="@{/image/button/hb_btn01.gif}" class="img_border" />
+					</a>
+				</td>
+			</tr>
+		</table>
+
+		<table class="user_table">
+			<tr>
+				<td class="td_left">
+					<font class="font_mono">ログインユーザ：</font>
+					<b>
+<!-- 						<font class="font_black" th:text="${login_user_info.familyNm}">&nbsp;</font> -->
+<!-- 						<font class="font_black" th:text="${login_user_info.firstNm}"></font> -->
+					</b>
+					<font class="font_mono">様</font>
+				</td>
+			</tr>
+		</table>
+
+	</div>
+</form>
+</header>
+</html>

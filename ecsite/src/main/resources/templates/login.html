@@ -1,0 +1,84 @@
+<!-- Author:sugou -->
+<!-- Date:2022/04/30 -->
+<!-- Copyright Notice:IT Engineer Center Co.,Ltd. -->
+<!-- Description:ログイン画面です。 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>ログイン画面</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet" />
+<script type="text/javascript">
+	function check() {
+
+		// ログインIDとパスワードを取得
+		var loginId = document.forms[0].loginId.value;
+		var password = document.forms[0].password.value;
+
+		if (loginId === "" && password === "") {
+			window.alert("ログインIDとパスワードが入力されていません。");
+			return false;
+		} else if (loginId === "") {
+			window.alert("ログインIDが入力されていません。");
+			return false;
+		} else if (password === "") {
+			window.alert("パスワードが入力されていません。");
+			return false;
+		}
+
+		// 処理を実行
+		return true;
+	}
+</script>
+</head>
+
+<body class="body_color">
+	<form action="#" th:action="@{/login}" th:method="post" th:object="${loginForm}" onsubmit="return check()">
+		<br/><br /><br />
+		<div align="center">ユーザ認証画面</div>
+		<br /><br />
+
+		<table class="table_size">
+			<tr><td class="sub_message">ログインIDとパスワードを入力して「ログインボタン」を押して下さい。</td></tr>
+			<tr><td class="sub_message">大文字、小文字の区別をして入力してください。</td></tr>
+		</table>
+		<br /><br />
+
+		<table class="main_table">
+			<tr>
+				<td>
+					<table class="table_size">
+						<tr>
+							<td class="table_header">ログインID</td>
+							<td><input id="loginId" name="loginId" class="text_box" maxlength="4" /></td>
+						</tr>
+						<tr>
+							<td id="tableHeader">パスワード</td>
+							<td><input id="password" name="password" class="text_box" maxlength="100" /></td>
+						</tr>
+						<tr>
+							<td align="center" colspan="10">
+							<br />
+							<br />
+							<button type="submit">ログイン</button> 
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+		<br /><br />
+
+		<th:if test="${!empty loginForm.errorMessage}">
+			<table align="center" class="error_msg">
+				<tr>
+					<td><div th:text="${loginForm.errorMessage}"></div></td>
+				</tr>
+			</table>
+		</th:if>
+
+	</form>
+</body>
+</html>

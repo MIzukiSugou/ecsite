@@ -1,0 +1,61 @@
+hr {
+  color: #ffff00 ;
+  height : 3px;
+  border : 1px;
+  border-color : silver;
+  border-style : dashed;
+}
+
+.box_length {
+  width : 150px;
+}
+
+.frame_outside {
+  background : #FFFFFF;
+}
+
+.body_image {
+  background-image : url("../image/backGround/bd_bg02.gif");
+}
+
+.tr_valign {
+  vertical-align : top;
+}
+
+.table_width {
+  width : 190px;
+}
+
+.img_border {
+  border : none;
+}
+
+.get_point_table {
+  background-image : url("../image/backGround/h1_lower.gif");
+  width : 720px;
+  height : 85px;
+}
+
+.get_point_size {
+  font-size : 3ex;
+  font-weight : bold;
+}
+
+.item_img {
+  border : none;
+  width : 110px;
+  height : 91px;
+}
+
+.point_img {
+  width : 17px;
+  height : 17px;
+}
+
+.item_frame_image {
+  background-image : url("../image/backGround/table_frame.png");
+  height : 249px;
+  width : 210px;
+  display : table-cell;
+  vertical-align : middle;
+}
